@@ -12,7 +12,7 @@ async function signIn(req, res) {
       if (match) {
           const token = jwt.sign({Id : user._id}, userJWTSecret, { expiresIn: "1h" });
           req.headers.authorization = token;
-          res.status(200).json({ message: "User signed in successfully" });
+          res.status(200).json({token : token});
       } else {
         res.status(401).json({ error: "Incorrect email or password" });
       }
