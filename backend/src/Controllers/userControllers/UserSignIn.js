@@ -11,7 +11,6 @@ async function signIn(req, res) {
       const match = await bcrypt.compare(password, user.password);
       if (match) {
           const token = jwt.sign({Id : user._id}, userJWTSecret, { expiresIn: "1h" });
-          req.headers.authorization = token;
           res.status(200).json({token : token});
       } else {
         res.status(401).json({ error: "Incorrect email or password" });

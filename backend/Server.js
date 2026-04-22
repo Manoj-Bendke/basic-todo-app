@@ -11,7 +11,7 @@ const app = express()
 app.use(express.json())
 // app.use(cors)
 
-app.use("/api/v1/user", UserRouter, ()=>{console.log("hii from user route");})
+app.use("/api/v1/user", UserRouter)
 app.use("/api/v1/admin", AdminRouter)
 
 async function startServer() {
