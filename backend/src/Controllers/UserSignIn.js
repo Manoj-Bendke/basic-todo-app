@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
-import { User } from "../../models/Schema.js";
+import { User } from "../models/Schema.js";
 import jwt from "jsonwebtoken";
-import { userJWTSecret, adminJWTSecret } from "../../config/config.js";
+import { userJWTSecret, adminJWTSecret } from "../config/config.js";
 
 async function signIn(req, res) {
   const { email, password } = req.body;

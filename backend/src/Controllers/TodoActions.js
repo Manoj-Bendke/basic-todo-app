@@ -1,11 +1,16 @@
-import { Todo } from "../../models/Schema.js"
+import { Todo } from "../models/Schema.js"
+import isBlank from "../Utils/validate.js"
 
 async function CreateTodos(req, res) {
-  const { title, status } = req.body
+  const { title, description, status } = req.body
   const UserId = req.UserId
-  if (!title) {
-    res.status(400).json({ error: "Nothing to create....Title is empty" })
-  }
+  if (
+    isBlank(UserId) ||
+    isBlank(title) ||
+    isBlank(description) ||
+    isBlank(status)
+  )
+    return res.status(400).json({ error: "Invalid Inputs" })
 
   try {
     console.log(req.body)
@@ -22,8 +27,9 @@ async function CreateTodos(req, res) {
 
 async function ShowAllTodos(req, res) {
   const UserId = req.UserId
+
   try {
-    const todos = await Todo.find({ createdBy: UserId })
+    const todos = await Todo.find({ createdBy: UserId }).skip(10).limit(10)
     if (todos) {
       res.status(200).send(todos)
     } else {
@@ -36,8 +42,16 @@ async function ShowAllTodos(req, res) {
 }
 
 async function EditTodos(req, res) {
-  const { todoId, title, status } = req.body
+  const { title, description, status } = req.body
+  const todoId = req.params.id
   const UserId = req.UserId
+  if (
+    isBlank(todoId) ||
+    isBlank(title) ||
+    isBlank(description) ||
+    isBlank(status)
+  )
+    return res.status(400).json({ error: "Invalid Inputs" })
   todoId.trim()
   try {
     const match = await Todo.findOne({ createdBy: UserId, _id: todoId })
@@ -62,12 +76,14 @@ async function EditTodos(req, res) {
 
 async function DeleteTodo(req, res) {
   const UserId = req.UserId
-  const { todoid } = req.body
-  todoid.trim()
+  const todoId = req.params.id
+  if (isBlank(todoId))
+    return res.status(400).json({ error: "Can't read todoId" })
+  todoId.trim()
   try {
     const deletedTodo = await Todo.findOneAndDelete({
       createdBy: UserId,
-      _id: todoid,
+      _id: todoId,
     })
     if (deletedTodo) {
       return res.status(200).json({ message: "Todo Deleted" })
@@ -84,11 +100,14 @@ async function DeleteTodo(req, res) {
 
 async function CompleteTodo(req, res) {
   const UserId = req.UserId
-  const { todoid } = req.body
-  todoid.trim()
+  const todoId = req.params.id
+  if (isBlank(todoId))
+    return res.status(400).json({ error: "Can't read todoId" })
+
+  todoId.trim()
   try {
     const completedtodo = await Todo.findOneAndUpdate(
-      { createdBy: UserId, _id: todoid },
+      { createdBy: UserId, _id: todoId },
       { $set: { status: "completed" } },
     )
     if (completedtodo) {
@@ -108,6 +127,8 @@ async function GetCompletedTodos(req, res) {
   const UserId = req.UserId
   try {
     const todos = await Todo.find({ createdBy: UserId, status: "completed" })
+      .skip(10)
+      .limit(10)
     if (todos) {
       res.status(200).send(todos)
     } else {
@@ -123,6 +144,8 @@ async function GetInProgressTodos(req, res) {
   const UserId = req.UserId
   try {
     const todos = await Todo.find({ createdBy: UserId, status: "Inprogress" })
+      .skip(10)
+      .limit(10)
     if (todos) {
       res.status(200).send(todos)
     } else {

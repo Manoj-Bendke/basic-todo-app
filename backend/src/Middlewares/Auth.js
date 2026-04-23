@@ -1,10 +1,10 @@
 import jwt from "jsonwebtoken";
+import { userJWTSecret } from "../config/config.js";
 
- function Auth(pass) {
-  return async function userAuth(req, res, next) {
+async function Auth(req, res, next) {
   const token = req.headers.authorization;
   try {
-    const user = await jwt.verify(token, pass);
+    const user = await jwt.verify(token, userJWTSecret);
     if (user) {
     req.UserId = user.Id;
     res.status(200)
@@ -16,6 +16,5 @@ import jwt from "jsonwebtoken";
     console.log(error);
     res.status(400).json({error:"Something went wrong"})
   }
-}
 }
 export{Auth}

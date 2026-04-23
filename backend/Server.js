@@ -9,7 +9,7 @@ import { AdminRouter } from "./src/Routes/AdminRoutes.js"
 
 const app = express()
 app.use(express.json())
-// app.use(cors)
+app.use(cors())
 
 app.use("/api/v1/user", UserRouter)
 app.use("/api/v1/admin", AdminRouter)
