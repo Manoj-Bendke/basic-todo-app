@@ -19,8 +19,7 @@ async function CreateTodos(req, res) {
       createdBy: UserId,
       status: status,
     })
-    res.status(201).json({ message: "Todo Created", todid: createdTodo._id })
-  } catch (error) {
+    res.status(201).json({ message: "Todo Created", todoId: createdTodo._id })  } catch (error) {
     res.status(400).json({ message: "Could not create a todo" })
   }
 }

@@ -1,6 +1,4 @@
 import mongoose from "mongoose"
-import { maxLength } from "zod"
-
 const todoSchema = new mongoose.Schema(
   {
     title: {
@@ -16,12 +14,12 @@ const todoSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: ["Inprogress", "completed"],
-      default: "active",
+      default: "Inprogress",
       required: true,
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "user",
+      ref: "User",
     },
   },
   { timestamps: true },
