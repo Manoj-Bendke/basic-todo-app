@@ -12,16 +12,15 @@ import {
   GetCompletedTodos,
   GetInProgressTodos,
 } from "../Controllers/TodoActions.js"
-import { userJWTSecret } from "../config/config.js"
 
 const UserRouter = express.Router()
-UserRouter.post("/create-todos", Auth(userJWTSecret),todoValidator, CreateTodos)
-UserRouter.get("/get-all-todos", Auth(userJWTSecret), ShowAllTodos)
-UserRouter.put("/edit-todo/:id", Auth(userJWTSecret),todoValidator, EditTodos)
-UserRouter.put('/complete-todo/:id',Auth(userJWTSecret), CompleteTodo)
-UserRouter.post('/delete-todo/:id',Auth(userJWTSecret), DeleteTodo)
-UserRouter.get('/get-completed-todos',Auth(userJWTSecret), GetCompletedTodos)
-UserRouter.get('/get-incomplete-todos',Auth(userJWTSecret), GetInProgressTodos)
+UserRouter.get("/get-all-todos", Auth, ShowAllTodos)
+UserRouter.post("/create-todos", todoValidator, Auth, CreateTodos)
+UserRouter.put("/edit-todo/:id",todoValidator, Auth, EditTodos)
+UserRouter.put('/complete-todo/:id',Auth, CompleteTodo)
+UserRouter.post('/delete-todo/:id',Auth, DeleteTodo)
+UserRouter.get('/get-completed-todos',Auth, GetCompletedTodos)
+UserRouter.get('/get-incomplete-todos',Auth, GetInProgressTodos)
 UserRouter.post("/signIn", signInvalidator, signIn)
 UserRouter.post("/signUp", signUpvalidator, signUp)
 

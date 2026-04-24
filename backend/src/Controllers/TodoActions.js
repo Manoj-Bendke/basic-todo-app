@@ -1,5 +1,5 @@
 import { Todo } from "../models/Schema.js"
-import isBlank from "../Utils/validate.js"
+import { isBlank } from "../Utils/validate.js"
 
 async function CreateTodos(req, res) {
   const { title, description, status } = req.body
@@ -16,10 +16,12 @@ async function CreateTodos(req, res) {
     console.log(req.body)
     const createdTodo = await Todo.create({
       title: title,
+      description: description,
       createdBy: UserId,
       status: status,
     })
-    res.status(201).json({ message: "Todo Created", todoId: createdTodo._id })  } catch (error) {
+    res.status(201).json({ message: "Todo Created", todoId: createdTodo._id })
+  } catch (error) {
     res.status(400).json({ message: "Could not create a todo" })
   }
 }
@@ -57,7 +59,7 @@ async function EditTodos(req, res) {
     if (match) {
       const editedTodo = await Todo.updateOne(
         { createdBy: UserId, _id: todoId },
-        { $set: { title: title, status: status } },
+        { $set: { title: title, description: description, status: status } },
       )
       if (editedTodo) {
         return res.status(200).json({ message: "Todo edited Successfully" })

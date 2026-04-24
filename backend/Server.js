@@ -5,14 +5,12 @@ import mongoose from "mongoose"
 dotenv.config()
 import { dbconnecturl } from "./src/config/config.js"
 import { UserRouter } from "./src/Routes/UserRoutes.js"
-import { AdminRouter } from "./src/Routes/AdminRoutes.js"
 
 const app = express()
 app.use(express.json())
 app.use(cors())
 
 app.use("/api/v1/user", UserRouter)
-app.use("/api/v1/admin", AdminRouter)
 
 async function startServer() {
   try {
