@@ -15,8 +15,8 @@ import {
 
 const UserRouter = express.Router()
 UserRouter.get("/get-all-todos", Auth, ShowAllTodos)
-UserRouter.post("/create-todos", todoValidator, Auth, CreateTodos)
-UserRouter.put("/edit-todo/:id",todoValidator, Auth, EditTodos)
+UserRouter.post("/create-todos",Auth, todoValidator , CreateTodos)
+UserRouter.put("/edit-todo/:id",Auth,todoValidator,  EditTodos)
 UserRouter.put('/complete-todo/:id',Auth, CompleteTodo)
 UserRouter.post('/delete-todo/:id',Auth, DeleteTodo)
 UserRouter.get('/get-completed-todos',Auth, GetCompletedTodos)

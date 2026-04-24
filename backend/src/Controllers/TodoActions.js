@@ -13,7 +13,6 @@ async function CreateTodos(req, res) {
     return res.status(400).json({ error: "Invalid Inputs" })
 
   try {
-    console.log(req.body)
     const createdTodo = await Todo.create({
       title: title,
       description: description,

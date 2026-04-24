@@ -3,7 +3,6 @@ import { userJWTSecret } from "../config/config.js";
 
 async function Auth(req, res, next) {
   const token = req.headers.authorization;
-  console.log(token);
   try {
     if(!token || !token.startsWith("Bearer ")){
       return res.status(401).json({error : "Unauthorized"})
