@@ -27,9 +27,12 @@ async function CreateTodos(req, res) {
 
 async function ShowAllTodos(req, res) {
   const UserId = req.UserId
+  const page = parseInt(req.query.page) || 1
+  const limit = parseInt(req.query.limit) || 10
+  const skip = (page - 1) * limit
 
   try {
-    const todos = await Todo.find({ createdBy: UserId }).skip(10).limit(10)
+    const todos = await Todo.find({ createdBy: UserId }).skip(skip).limit(limit)
     if (todos) {
       res.status(200).send(todos)
     } else {
@@ -45,6 +48,9 @@ async function EditTodos(req, res) {
   const { title, description, status } = req.body
   const todoId = req.params.id
   const UserId = req.UserId
+  if (!mongoose.Types.ObjectId.isValid(todoId)) {
+   return res.status(400).json({ error: "Invalid ToDo ID format" });
+}
   if (
     isBlank(todoId) ||
     isBlank(title) ||
